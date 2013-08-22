@@ -20,6 +20,7 @@ using namespace std;
 #include <ctime>
 #include <string>
 #include <cstring>
+#include <climits>
 
 #define s(n)                         scanf("%d",&n)
 #define sc(n)                        scanf("%c",&n)
@@ -28,9 +29,9 @@ using namespace std;
 #define ss(n)                        scanf("%s",n)
 #define scana(a,t)                   for(int i = 0; i < t; i++){cin >> a[i];}
 
-#define forall(i,a,b)                for(int i=a;i<b;i++)
-#define foreach(v, c)                for( typeof( (c).begin()) v = (c).begin();  v != (c).end(); ++v)
-#define rep(i,a)                     for (int i=0; i<a; i++)
+#define FOR(i,a,b)                	 for(int i=a;i<b;i++)
+#define FOREACH(v, c)                for( typeof( (c).begin()) v = (c).begin();  v != (c).end(); ++v)
+#define REP(i,a)                     for (int i=0; i<a; i++)
 
 #define all(a)                        a.begin(), a.end()
 #define in(a,b)                       ( (b).find(a) != (b).end())
@@ -40,6 +41,8 @@ using namespace std;
 
 #define maX(a,b)                      ( (a) > (b) ? (a) : (b))
 #define miN(a,b)                      ( (a) < (b) ? (a) : (b))
+#define PI                     		  acos(-1)
+#define sqr(x)                 		  ((x) * (x))
 
 #define p(n)                          printf("%d\n",n)
 #define pl(n)                         printf("%lld\n",n)
@@ -49,9 +52,13 @@ using namespace std;
 #define ps(n)                         printf("%s\n",n)
 
 #define sort(x)                       sort(all(x))
+#define gsort(x)                      sort(all(x), greater<typeof(*((x).begin()))>())
+#define mp 							  make_pair
 
-#define freopen_in                    freopen("in.txt","r",stdin);
-#define freopen_out                   freopen("out.txt","w",stdout);
+#define DEBUG(x)               		  { cerr << #x << " = " << x << endl; }
+#define PR(a,n)                		  {cerr<<#a<<" = "; FOR(_,1,n) cerr << a[_] << ' '; cerr <<endl;}
+#define PR0(a,n)               		  {cerr<<#a<<" = ";REP(_,n) cerr << a[_] << ' '; cerr << endl;}
+
 #define numTest(t)                    int t; s(t); while(t--)
 
 typedef long long LL;
@@ -72,79 +79,28 @@ typedef vector<VLL> VVLL;
 typedef vector<string> VS;
 typedef vector<VS> VVS;
 
-
-void copyBack(int temp[], int a[], int i, int j)
+int main()
 {
-	int s=0;
-	while(i <= j)
+	#ifndef ONLINE_JUDGE
+		freopen ("in.txt", "r", stdin);
+		// freopen ("out.txt", "w", stdout);
+	#endif
+	int x,y; cin>>x>>y;
+	int x1=0,y1,y2=0;
+	y1 = y>0? abs(x)+y:-abs(x)+y;
+	int x2;
+	x2 = x>0 ? x+abs(y): x - abs(y);
+	PII a,b;
+	if(x1<x2)
 	{
-		a[i++] = temp[s++];
-	}
-}
-void mergeSplitCount(int a[], int i, int mid, int j, ULL& sum)
-{
-	int* temp = new int[j-i+1];
-	int k=0, m = mid+1, f=i;
-	while(1)
-	{
-		if (i<=mid && m<=j && a[i]<=a[m])
-		{
-			temp[k++] = a[i++];
-		}
-		else if (i<=mid && m<=j && a[m]<a[i])
-		{
-			temp[k++] = a[m++];
-			sum += (ULL)(mid+1-i);
-		}
-		else
-			break;
-	}
-	while(i<=mid)
-	{
-		temp[k++] = a[i++];
-	}
-	while(m<=j)
-	{
-		temp[k++] = a[m++];
-	}
-	copyBack(temp,a,f,j);
-	delete[] temp;
-}
-
-void mergeCount(int a[], int i, int j, ULL& sum)
-{
-	if(i>=j)
-	{
-		return;
+		a = mp(x1,y1);
+		b = mp(x2,y2);
 	}
 	else
 	{
-		int mid = i+ (j-i)/2;
-		mergeCount(a,i,mid,sum);
-		mergeCount(a,mid+1,j,sum);
-		//printf("%d %d %d\n",i,mid,j);
-		mergeSplitCount(a,i,mid,j,sum);
+		a = mp(x2,y2);
+		b = mp(x1,y1);
 	}
-}
-
-void printArr(int a[], int n)
-{
-	for (int i = 0; i < n; ++i)
-	{
-		printf("%d\n", a[i]);
-	}
-}
-#define N 100000
-int main()
-{
-	freopen_in;
-	freopen_out;
-	ULL sum=0;
-	int a[100000];
-	rep(i,N)
-		s(a[i]);
-	mergeCount(a,0,N-1,sum);
-	printf("inversions = %llu\n", sum);
-	printArr(a,N);
+	printf("%d %d %d %d\n",a.first, a.second, b.first, b.second);
 	return 0;
 }
